@@ -35,6 +35,20 @@ class Plane {
     if (this.movement[3]) this.velocity.y = 1;
   }
 
+  preventOutOfBounds() {
+    if (this.position.x < 0) {
+      this.position.x = 0;
+    } else if (this.position.x + this.width > canvas.width) {
+      this.position.x = canvas.width - this.width;
+    }
+
+    if (this.position.y < 0) {
+      this.position.y = 0;
+    } else if (this.position.y + this.height > canvas.height) {
+      this.position.y = canvas.height - this.height;
+    }
+  }
+
   /**
    *
    * @param {CanvasRenderingContext2D} context
@@ -57,5 +71,7 @@ class Plane {
 
     this.velocity.x = 0;
     this.velocity.y = 0;
+
+    this.preventOutOfBounds();
   }
 }
