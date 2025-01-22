@@ -11,6 +11,7 @@ let lastBulletSpawn = 0;
 
 // Objects
 const plane = new Plane(15, HEIGHT / 2 - 20);
+const pizzas = [new Pizza(WIDTH / 2, HEIGHT / 2, 3)];
 const bullets = [];
 
 // Util Functions
@@ -24,6 +25,12 @@ function spawnBullet() {
 }
 
 // Draw Functions
+function drawPizzas() {
+  pizzas.forEach((pizza) => {
+    pizza.draw(context);
+  });
+}
+
 function drawBullets() {
   bullets.forEach((bullet) => {
     bullet.draw(context);
@@ -31,6 +38,12 @@ function drawBullets() {
 }
 
 // Update Functions
+function updatePizzas(deltaTime) {
+  pizzas.forEach((pizza) => {
+    pizza.update(deltaTime);
+  });
+}
+
 function updateBullets(deltaTime) {
   lastBulletSpawn += deltaTime;
   if (lastBulletSpawn >= FIRERATE) {
@@ -76,13 +89,15 @@ document.addEventListener("keyup", (ev) => {
 function draw() {
   context.clearRect(0, 0, WIDTH, HEIGHT);
 
+  drawPizzas();
   drawBullets();
   plane.draw(context);
 }
 
 function update(deltaTime) {
-  plane.update(deltaTime);
   updateBullets(deltaTime);
+  plane.update(deltaTime);
+  updatePizzas(deltaTime);
 }
 
 function loop(timestamp) {

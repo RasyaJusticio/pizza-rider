@@ -3,7 +3,7 @@ class Bullet {
     this.position = new Vector(x, y);
     this.velocity = new Vector(1, 0);
 
-    this.movementSpeed = 700;
+    this.movementSpeed = 1500;
 
     this.width = 20;
     this.height = 10;
