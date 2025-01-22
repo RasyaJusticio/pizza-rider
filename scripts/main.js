@@ -2,19 +2,50 @@
 const canvas = document.getElementById("canvas");
 const context = canvas.getContext("2d");
 
-// Constants
-const WIDTH = (canvas.width = 1280);
-const HEIGHT = (canvas.height = 600);
+canvas.width = WIDTH;
+canvas.height = HEIGHT;
 
 // Variables
 let lastTimestamp = 0;
+let lastBulletSpawn = 0;
 
 // Objects
 const plane = new Plane(15, HEIGHT / 2 - 20);
+const bullets = [];
+
+// Util Functions
+function spawnBullet() {
+  const bullet = new Bullet(
+    plane.position.x + plane.width,
+    plane.position.y + plane.height / 2
+  );
+
+  bullets.push(bullet);
+}
 
 // Draw Functions
+function drawBullets() {
+  bullets.forEach((bullet) => {
+    bullet.draw(context);
+  });
+}
 
 // Update Functions
+function updateBullets(deltaTime) {
+  lastBulletSpawn += deltaTime;
+  if (lastBulletSpawn >= FIRERATE) {
+    lastBulletSpawn = 0;
+    spawnBullet();
+  }
+
+  bullets.forEach((bullet, index) => {
+    if (bullet.isOutOfBounds()) {
+      bullets.splice(index, 1);
+    } else {
+      bullet.update(deltaTime);
+    }
+  });
+}
 
 // Events
 document.addEventListener("keydown", (ev) => {
@@ -45,11 +76,13 @@ document.addEventListener("keyup", (ev) => {
 function draw() {
   context.clearRect(0, 0, WIDTH, HEIGHT);
 
+  drawBullets();
   plane.draw(context);
 }
 
 function update(deltaTime) {
   plane.update(deltaTime);
+  updateBullets(deltaTime);
 }
 
 function loop(timestamp) {

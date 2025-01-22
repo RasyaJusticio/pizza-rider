@@ -33,8 +33,6 @@ class Plane {
     if (this.movement[1]) this.velocity.y = -1;
     if (this.movement[2]) this.velocity.x = 1;
     if (this.movement[3]) this.velocity.y = 1;
-
-    console.log(this.movement);
   }
 
   /**
